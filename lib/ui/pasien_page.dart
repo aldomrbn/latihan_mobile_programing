@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widget/sidebar.dart';
 import '../model/pasien.dart';
 import 'pasien_item.dart';
 import 'pasien_form.dart';
@@ -23,33 +24,41 @@ class _PasienPageState extends State<PasienPage> {
     Pasien(
       id: 2,
       nomorRm: "RM-002",
-      nama: "Dewi Lestari",
-      tanggalLahir: "1998-11-20",
-      nomorTelepon: "085566778899",
-      alamat: "Jl. Mawar No. 45",
+      nama: "Siti Rahma",
+      tanggalLahir: "1995-07-25",
+      nomorTelepon: "085677889900",
+      alamat: "Jl. Mawar No. 5",
     ),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const Sidebar(),
       appBar: AppBar(
         title: const Text("Data Pasien"),
+        backgroundColor: Colors.teal, // <--- WARNA BACKGROUND HEADER
+        foregroundColor: Colors.white, // <--- WARNA TEKS & IKON HEADER
         actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const PasienForm()),
-              );
-            },
-          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: GestureDetector(
+              child: const Icon(Icons.add),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const PasienForm()),
+                );
+              },
+            ),
+          )
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(8.0),
-        children: listPasien.map((data) => PasienItem(pasien: data)).toList(),
+      body: ListView.builder(
+        itemCount: listPasien.length,
+        itemBuilder: (context, index) {
+          return PasienItem(pasien: listPasien[index]);
+        },
       ),
     );
   }

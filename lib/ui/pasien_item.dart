@@ -9,20 +9,19 @@ class PasienItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PasienDetail(pasien: pasien),
-          ),
-        );
-      },
-      child: Card(
-        child: ListTile(
-          title: Text(pasien.nama),
-          subtitle: Text("Nomor RM: ${pasien.nomorRm}"),
-        ),
+    return Card(
+      child: ListTile(
+        title: Text(pasien.nama),
+        subtitle: Text("No RM: ${pasien.nomorRm}"),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PasienDetail(pasien: pasien),
+            ),
+          );
+        },
       ),
     );
   }

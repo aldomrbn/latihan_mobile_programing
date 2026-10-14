@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../model/pegawai.dart';
+import 'pegawai_page.dart';
 
 class PegawaiDetail extends StatefulWidget {
   final Pegawai pegawai;
@@ -11,6 +12,50 @@ class PegawaiDetail extends StatefulWidget {
 }
 
 class _PegawaiDetailState extends State<PegawaiDetail> {
+  // Tombol Hapus dengan Dialog Konfirmasi
+  Widget _tombolHapus() {
+    return ElevatedButton.icon(
+      onPressed: () {
+        AlertDialog alertDialog = AlertDialog(
+          content: const Text("Yakin ingin menghapus data pegawai ini?"),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context); // Tutup dialog
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const PegawaiPage()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+              ),
+              child: const Text("YA"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context); // Tutup dialog
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+              ),
+              child: const Text("Tidak"),
+            ),
+          ],
+        );
+        showDialog(context: context, builder: (context) => alertDialog);
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.red,
+        foregroundColor: Colors.white,
+      ),
+      icon: const Icon(Icons.delete),
+      label: const Text("Hapus"),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,35 +67,37 @@ class _PegawaiDetailState extends State<PegawaiDetail> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("ID : ${widget.pegawai.id ?? '-'}", style: const TextStyle(fontSize: 16)),
+            Text(
+              "NIP : ${widget.pegawai.nip}",
+              style: const TextStyle(fontSize: 16),
+            ),
             const SizedBox(height: 8),
-            Text("NIP : ${widget.pegawai.nip}", style: const TextStyle(fontSize: 16)),
+            Text(
+              "Nama : ${widget.pegawai.nama}",
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 8),
-            Text("Nama : ${widget.pegawai.nama}", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text("Tanggal Lahir : ${widget.pegawai.tanggalLahir}"),
             const SizedBox(height: 8),
-            Text("Tanggal Lahir : ${widget.pegawai.tanggalLahir}", style: const TextStyle(fontSize: 16)),
+            Text("No Telp : ${widget.pegawai.nomorTelepon}"),
             const SizedBox(height: 8),
-            Text("No. Telepon : ${widget.pegawai.nomorTelepon}", style: const TextStyle(fontSize: 16)),
-            const SizedBox(height: 8),
-            Text("Email : ${widget.pegawai.email}", style: const TextStyle(fontSize: 16)),
-            const SizedBox(height: 24),
+            Text("Email : ${widget.pegawai.email}"),
+            const SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton.icon(
                   onPressed: () {},
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.green, foregroundColor: Colors.white),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                  ),
                   icon: const Icon(Icons.edit),
                   label: const Text("Ubah"),
                 ),
-                ElevatedButton.icon(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red, foregroundColor: Colors.white),
-                  icon: const Icon(Icons.delete),
-                  label: const Text("Hapus"),
-                ),
+                _tombolHapus(),
               ],
-            )
+            ),
           ],
         ),
       ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'poli_page.dart';
+import 'poli_update_form.dart';
 import '../model/poli.dart';
 
 class PoliDetail extends StatefulWidget {
@@ -17,52 +19,73 @@ class _PoliDetailState extends State<PoliDetail> {
       appBar: AppBar(
         title: const Text("Detail Poli"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 20),
-            Text(
-              "ID Poli : ${widget.poli.id ?? '-'}",
-              style: const TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              "Nama Poli : ${widget.poli.namaPoli}",
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton.icon(
-                  onPressed: () {
-                    // Aksi untuk Edit / Ubah
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    foregroundColor: Colors.white,
-                  ),
-                  icon: const Icon(Icons.edit),
-                  label: const Text("Ubah"),
-                ),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    // Aksi untuk Hapus
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    foregroundColor: Colors.white,
-                  ),
-                  icon: const Icon(Icons.delete),
-                  label: const Text("Hapus"),
-                ),
-              ],
-            ),
-          ],
-        ),
+      body: Column(
+        children: [
+          const SizedBox(height: 20),
+          Text(
+            "Nama Poli : ${widget.poli.namaPoli}",
+            style: const TextStyle(fontSize: 20),
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _tombolUbah(),
+              _tombolHapus(),
+            ],
+          )
+        ],
       ),
+    );
+  }
+
+  Widget _tombolUbah() {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PoliUpdateForm(poli: widget.poli),
+          ),
+        );
+      },
+      style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+      child: const Text("Ubah"),
+    );
+  }
+
+  Widget _tombolHapus() {
+    return ElevatedButton(
+      onPressed: () {
+        AlertDialog alertDialog = AlertDialog(
+          content: const Text("Yakin ingin menghapus data ini?"),
+          actions: [
+            // tombol ya
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const PoliPage()),
+                );
+              },
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              child: const Text("YA"),
+            ),
+            // tombol batal
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+              child: const Text("Tidak"),
+            )
+          ],
+        );
+        showDialog(context: context, builder: (context) => alertDialog);
+      },
+      style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+      child: const Text("Hapus"),
     );
   }
 }

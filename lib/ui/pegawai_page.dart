@@ -36,6 +36,7 @@ class _PegawaiPageState extends State<PegawaiPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.teal,
         title: const Text("Data Pegawai"),
         actions: [
           IconButton(
