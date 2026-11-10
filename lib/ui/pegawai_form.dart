@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../model/pegawai.dart';
-import 'pegawai_detail.dart';
 
 class PegawaiForm extends StatefulWidget {
   const PegawaiForm({super.key});
@@ -21,7 +20,11 @@ class _PegawaiFormState extends State<PegawaiForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Tambah Pegawai")),
+      appBar: AppBar(
+        title: const Text("Tambah Pegawai"),
+        backgroundColor: const Color(0xFF00838F),
+        foregroundColor: Colors.white,
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -40,7 +43,7 @@ class _PegawaiFormState extends State<PegawaiForm> {
                 _fieldEmail(),
                 const SizedBox(height: 12),
                 _fieldPassword(),
-                const SizedBox(height: 20),
+                const SizedBox(height: 24),
                 _tombolSimpan(),
               ],
             ),
@@ -53,35 +56,52 @@ class _PegawaiFormState extends State<PegawaiForm> {
   Widget _fieldNip() {
     return TextField(
       controller: _nipCtrl,
-      decoration: const InputDecoration(labelText: "NIP"),
+      decoration: const InputDecoration(
+        labelText: "NIP",
+        border: OutlineInputBorder(),
+      ),
     );
   }
 
   Widget _fieldNama() {
     return TextField(
       controller: _namaCtrl,
-      decoration: const InputDecoration(labelText: "Nama Pegawai"),
+      decoration: const InputDecoration(
+        labelText: "Nama Pegawai",
+        border: OutlineInputBorder(),
+      ),
     );
   }
 
   Widget _fieldTanggalLahir() {
     return TextField(
       controller: _tanggalLahirCtrl,
-      decoration: const InputDecoration(labelText: "Tanggal Lahir (YYYY-MM-DD)"),
+      decoration: const InputDecoration(
+        labelText: "Tanggal Lahir (YYYY-MM-DD)",
+        border: OutlineInputBorder(),
+      ),
     );
   }
 
   Widget _fieldNomorTelepon() {
     return TextField(
       controller: _nomorTeleponCtrl,
-      decoration: const InputDecoration(labelText: "Nomor Telepon"),
+      keyboardType: TextInputType.phone,
+      decoration: const InputDecoration(
+        labelText: "Nomor Telepon",
+        border: OutlineInputBorder(),
+      ),
     );
   }
 
   Widget _fieldEmail() {
     return TextField(
       controller: _emailCtrl,
-      decoration: const InputDecoration(labelText: "Email"),
+      keyboardType: TextInputType.emailAddress,
+      decoration: const InputDecoration(
+        labelText: "Email",
+        border: OutlineInputBorder(),
+      ),
     );
   }
 
@@ -89,29 +109,36 @@ class _PegawaiFormState extends State<PegawaiForm> {
     return TextField(
       controller: _passwordCtrl,
       obscureText: true,
-      decoration: const InputDecoration(labelText: "Password"),
+      decoration: const InputDecoration(
+        labelText: "Password",
+        border: OutlineInputBorder(),
+      ),
     );
   }
 
   Widget _tombolSimpan() {
-    return ElevatedButton(
-      onPressed: () {
-        Pegawai pegawaiBaru = Pegawai(
-          nip: _nipCtrl.text,
-          nama: _namaCtrl.text,
-          tanggalLahir: _tanggalLahirCtrl.text,
-          nomorTelepon: _nomorTeleponCtrl.text,
-          email: _emailCtrl.text,
-          password: _passwordCtrl.text,
-        );
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PegawaiDetail(pegawai: pegawaiBaru),
-          ),
-        );
-      },
-      child: const Text("Simpan"),
+    return SizedBox(
+      width: double.infinity,
+      height: 48,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFF00838F),
+          foregroundColor: Colors.white,
+        ),
+        onPressed: () {
+          Pegawai pegawai = Pegawai(
+            id: DateTime.now().millisecondsSinceEpoch,
+            nip: _nipCtrl.text,
+            nama: _namaCtrl.text,
+            tanggalLahir: _tanggalLahirCtrl.text,
+            nomorTelepon: _nomorTeleponCtrl.text,
+            email: _emailCtrl.text,
+            password: _passwordCtrl.text,
+          );
+          Navigator.pop(context, pegawai);
+        },
+        child: const Text("Simpan", style: TextStyle(fontSize: 16)),
+      ),
     );
   }
 }

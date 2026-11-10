@@ -37,18 +37,24 @@ class _PasienPageState extends State<PasienPage> {
       drawer: const Sidebar(),
       appBar: AppBar(
         title: const Text("Data Pasien"),
-        backgroundColor: Colors.teal, // <--- WARNA BACKGROUND HEADER
-        foregroundColor: Colors.white, // <--- WARNA TEKS & IKON HEADER
+        backgroundColor: const Color(0xFF00838F),
+        foregroundColor: Colors.white,
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: GestureDetector(
               child: const Icon(Icons.add),
-              onTap: () {
-                Navigator.push(
+              onTap: () async {
+                final Pasien? pasienBaru = await Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const PasienForm()),
                 );
+
+                if (pasienBaru != null) {
+                  setState(() {
+                    listPasien.add(pasienBaru);
+                  });
+                }
               },
             ),
           )

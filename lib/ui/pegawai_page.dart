@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widget/sidebar.dart';
 import '../model/pegawai.dart';
 import 'pegawai_item.dart';
 import 'pegawai_form.dart';
@@ -14,45 +15,58 @@ class _PegawaiPageState extends State<PegawaiPage> {
   final List<Pegawai> listPegawai = [
     Pegawai(
       id: 1,
-      nip: "199201012020011001",
-      nama: "Dr. Renaldo Marbun",
-      tanggalLahir: "2001-26-02",
+      nip: "199001012022011001",
+      nama: "dr. Andi Wijaya",
+      tanggalLahir: "1990-01-01",
       nomorTelepon: "081234567890",
-      email: "aldo@gmail.com",
-      password: "password123",
+      email: "andi.wijaya@klinik.com",
+      password: "123",
     ),
     Pegawai(
       id: 2,
-      nip: "199505102021022002",
-      nama: "juni, S.Kep",
-      tanggalLahir: "1995-05-10",
+      nip: "199205122022012002",
+      nama: "Ners. Budi Santoso",
+      tanggalLahir: "1992-05-12",
       nomorTelepon: "089876543210",
-      email: "juni@gmail.com",
-      password: "password456",
+      email: "budi.santoso@klinik.com",
+      password: "123",
     ),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const Sidebar(),
       appBar: AppBar(
-        backgroundColor: Colors.teal,
         title: const Text("Data Pegawai"),
+        backgroundColor: const Color(0xFF00838F),
+        foregroundColor: Colors.white,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const PegawaiForm()),
-              );
-            },
-          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: GestureDetector(
+              child: const Icon(Icons.add),
+              onTap: () async {
+                final Pegawai? pegawaiBaru = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const PegawaiForm()),
+                );
+
+                if (pegawaiBaru != null) {
+                  setState(() {
+                    listPegawai.add(pegawaiBaru);
+                  });
+                }
+              },
+            ),
+          )
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(8.0),
-        children: listPegawai.map((data) => PegawaiItem(pegawai: data)).toList(),
+      body: ListView.builder(
+        itemCount: listPegawai.length,
+        itemBuilder: (context, index) {
+          return PegawaiItem(pegawai: listPegawai[index]);
+        },
       ),
     );
   }

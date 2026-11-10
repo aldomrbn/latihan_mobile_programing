@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'beranda.dart'; // Import beranda agar fungsi login bisa navigasi
+import '../services/login_service.dart'; // Menggunakan 'services' sesuai nama folder
+import 'beranda.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -73,12 +74,35 @@ class _LoginState extends State<Login> {
       width: MediaQuery.of(context).size.width,
       child: ElevatedButton(
         child: const Text("Login"),
-        onPressed: () {
-          // Navigasi ke Halaman Beranda saat tombol Login diklik
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const Beranda()),
-          );
+        onPressed: () async {
+          String username = _usernameCtrl.text;
+          String password = _passwordCtrl.text;
+
+          await LoginService().login(username, password).then((value) {
+            if (value == true) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const Beranda()),
+              );
+            } else {
+              AlertDialog alertDialog = AlertDialog(
+                content: const Text("Username atau Password Tidak Valid"),
+                actions: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                    child: const Text("OK"),
+                  )
+                ],
+              );
+              showDialog(
+                context: context,
+                builder: (context) => alertDialog,
+              );
+            }
+          });
         },
       ),
     );

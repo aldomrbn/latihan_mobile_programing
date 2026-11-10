@@ -1,41 +1,59 @@
 import 'package:flutter/material.dart';
+import '../model/poli.dart';
+import '../services/poli_service.dart';
+import 'poli_detail.dart';
 
 class PoliForm extends StatefulWidget {
-  const PoliForm({super.key});
+  const PoliForm({Key? key}) : super(key: key);
 
   @override
-  State<PoliForm> createState() => _PoliFormState();
+  _PoliFormState createState() => _PoliFormState();
 }
 
 class _PoliFormState extends State<PoliForm> {
+  final _formKey = GlobalKey<FormState>();
   final _namaPoliCtrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Tambah Poli"),
-      ),
+      appBar: AppBar(title: const Text("Tambah Poli")),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
           child: Column(
             children: [
-              TextField(
-                controller: _namaPoliCtrl,
-                decoration: const InputDecoration(labelText: "Nama Poli"),
-              ),
+              _fieldNamaPoli(),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text("Simpan"),
-              ),
+              _tombolSimpan(),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  _fieldNamaPoli() {
+    return TextField(
+      decoration: const InputDecoration(labelText: "Nama Poli"),
+      controller: _namaPoliCtrl,
+    );
+  }
+
+  _tombolSimpan() {
+    return ElevatedButton(
+      onPressed: () async {
+        Poli poli = Poli(namaPoli: _namaPoliCtrl.text);
+        await PoliService().simpan(poli).then((value) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PoliDetail(poli: value),
+            ),
+          );
+        });
+      },
+      child: const Text("Simpan"),
     );
   }
 }
